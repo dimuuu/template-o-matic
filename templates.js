@@ -1,6 +1,6 @@
 import Papa from "papaparse";
 import Fuse from "fuse.js";
-import csv from "./templates.csv?url";
+import templatesCSV from "./templates.csv?url";
 
 export default () => ({
   searchQuery: "",
@@ -8,14 +8,13 @@ export default () => ({
   fuse: null,
   init() {
     // Load and parse the CSV file
-    fetch(csv)
+    fetch(templatesCSV)
       .then((response) => response.text())
       .then((csvText) => {
         const result = Papa.parse(csvText, { header: true });
         this.snippets = result.data.map((row) => ({
           category: row.category,
-          type: row.type,
-          subject: row.subject,
+          title: row.title,
           body: row.body,
         }));
         this.fuse = new Fuse(this.snippets, {
